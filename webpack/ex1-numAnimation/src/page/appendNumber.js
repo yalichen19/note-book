@@ -14,7 +14,6 @@ export default function (n) {
     $('body').append(div);
     getComputedStyle(div[0]).left;
     div.css('transform', `translate(${getRandom(-200, 200)}px,${getRandom(-200, 200)}px)`).css('opacity', 0);
-    console.log(`translate(${getRandom(-200, 200)}px,${getRandom(-200, 200)}px)`)
     span.css('color', color);
   }
   divContainer.append(span);
