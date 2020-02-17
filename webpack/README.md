@@ -21,14 +21,93 @@ npm 提供了两个包
 - webpack： 核心包，包含 webpack 构建过程中使用的所有 api。
 - webpack-cli：提供一个简单的 cli 命令，它调用 webpack 核心包的 api，来完成构建过程。不用 webpack-cli 的话，也可以直接通过 js 调用核心包的 api 完成构建。
 
+## webpack 的编译过程
+webpack 的作用是将源代码编译（构建、打包）成最终代码，整个过程大致分为3个步骤
+1. 初始化
+2. 编译
+3. 输出
 
-# webpack 的使用
-默认情况下，以 ./src/index.js 为入口，打包到 ./dist/main.js 文件中。
+### 初始化
+这个阶段，webpack 会将 **cli配置**、**配置文件**、**默认配置**仅需合并，形成一个最终的配置对象。
 
---mode 可指定环境： development / production
+对配置的处理过程是依托于第三方库 yargs 完成的
 
-## webpack 的编译流程
+因此初始化简单说就是生成配置对象
+
+### 编译 （ watch 的更新不再初始化，而从编译执行）
+1. 创建 chunk 
+
+    chunk 是 webpack 在内部构建过程中的一个概念，它表示从某个入口找到所有依赖的统称。
+    
+    如果入口配置较简单，可以简单认为从入口文件找到的所有依赖就是一个chunk
+
+    每一个 chunk 都至少有两个属性：
+    - name： 默认为main
+    - id：唯一编号，开发环境和 name 相同，生产环境是一个数字，从 0 开始
+
+2. 构建所有依赖模块，即要找出所有依赖，并为其替换依赖函数生成转换后的代码。
+
+    一个chunk的构建过程：
+
+    1. 从入口开始读取模块文件路径
+    2. 根据路径检查**结果记录**（记录1），已记录则结束，未记录则继续
+    3. 根据路径读取文件内容
+    4. 语法分析文件内容生成 AST（抽象语法树） 
+    5. 记录依赖，保存到 **dependencies** （记录2，临时记录）中
+    6. 替换依赖函数
+    7. 保存转换后的模块代码到**结果记录**（记录1）
+    8. 根据 **dependencies** （记录2）的内容递归加载模块，回到1执行递归
+
+    一个chunk的构建结果：生成**结果记录**（记录1）,即每个模块id（路径）和转换后代码的表格，如
+
+    结果记录
+    模块id | content
+    ---- | ---
+    ./src/index.js | __webpack__require__('./src/a.js'）...
+    ./src/a.js |  console.log('a')
+
+3. 产生chunk assets ，生成 chunk hash
+根据配置和 chunk 的构建结果记录生成一个资源列表，即 chunk assets。
+    
+    资源列表可以理解为生成到最终文件的文件名和文件内容。如：
+
+    chunk assets
+    chunk id | content
+    ---- | ---
+    ./dist/main.js | （function(){// 调用入口模块}({// 每个模块}))
+    ./dist/main.js.map | xxx
+    chunk hash: xxxxxxxxxxxxxxxxxxxxxxxx
+    
+    相当于把结果记录的多个模块按照通用模版生成最终打包结果的内容，同时 souce map 文件内容，也在这个过程中产生。
+
+    其中每个资源项目，为一个 bundle。
+
+    hash：一种算法，特点是把一个任意长度的字符串转换为一个固定长度的字符串，而且可以保证原生内容不变，则生成的hash字符串也不变。可以用于快速判断文件内容是否改变。
+
+4. 重复上述 123 把所有入口对应的 chunk assets 生成，然后整合为一个总的 assets ，和总的 hash
+
+### 输出
+根据总的 assets ， 输出文件
+
+## 涉及术语
+- module ：模块，分隔代码的单元，可以是图片，js等等
+- chunk ：webpack 内部构建的分隔单位，从一个入口文件找到的所有依赖就是一个chunk
+- bundle ：构建完成的资源清单的每一项，包含多个模块的整合代码，也是最终生成的文件
+- hash ：打包最终所有内容联合生成的 hash 值
+- chunkhash： 一个 chunk 所有内容联合生成的 hash 值
+- chunkname： chunk 的名称，默认为 main
+- id ： 通常指 chunk 的唯一编号，开发环境和 name 相同，生产环境是一个数字，从 0 开始
 
 
-## webpack 编译结果分析
+
+
+
+
+   
+
+
+
+    
+
+ 
 
