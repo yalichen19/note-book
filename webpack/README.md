@@ -3,6 +3,10 @@
 
 > [webpack编译过程](./webpack编译过程.md)
 
+> [webpack 打包结果分析示例](./ex2-packResult/README.md)
+
+> [webpack的配置](./webpack的配置.md)
+
 ## webpack 的本质 / 解决的问题
 webpack 是前端构建工具之一，用于将开发环境代码转换为生产环境代码。至于为什么要区分生产环境和开发环境，可以看上一章。
 
