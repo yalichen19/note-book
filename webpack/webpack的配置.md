@@ -47,8 +47,7 @@ module.exports = {
 }
 ```
 
-## loader
-webpack loader 的本质是一个函数，它的作用是在读取文件内容之后，生成AST之前，将某个源码字符串转换成另一个源码字符串。简单说就是字符串转换。
+## [loader](./ex3-loader/README.md)
 
 ## 常用插件
 - [clean-webpack-plugin](https://github.com/johnagan/clean-webpack-plugin): 清除打包目录
