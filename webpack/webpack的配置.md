@@ -41,16 +41,71 @@ module.exports = {
    * [id]: 不建议使用，开发环境中为 [name]，生产为数字，不一致
    */
   output: {
+    /**
+     * 入口的执行结果暴露给 output 对象
+     */
+    library: 'output',
+    /**
+     * 与 library 联用，配置对象的声明方式
+     */
+    libraryTarget: 'var',
     path: path.resolve(__dirname, 'target'),
     filename: '[name].[chunkhash:5].js',
-  }
+  },
+  /**
+   * 该配置会影响入口和 loaders 的解析，入口和 loaders 的相对路径会以 context 配置作为基准路径，你的配置会独立于 cwd (current wroking direcyory)
+   */
+  context: path.resolve(__dirname, 'app'),
+  /**
+   * 配置代码运行环境，会影响依赖的解析，如 web 环境对于 node modules 内置模块引用会报错
+   */
+  target: 'web',
+  module: {
+    rules: [],
+    /**
+     * 不对 a 模块做任何处理，直接读内容，甚至不解析依赖（只是优化构建性能）
+     * 用于如 jquery 这样没有其他依赖且是打包后的模块
+     */
+    noParse: /a\.js/,
+  },
+  resolve: {
+    /**
+     * 配置寻找依赖的文件，会先从当前目录下的 modules 寻找，再往上级寻找
+     */
+    modules: ['node_modules'], // 越前面的配置越优先，可用于将三方库移植到 src 中
+    /**
+     * 用于忽略后缀名
+     */
+    extensions: ['.js', '.json'],
+    /**
+     * 路径别名
+     */
+    alias: {
+      '@': path.resolve(__dirname, 'src')
+    },
+  },
+  /**
+   * 忽略 jquery 模块的引用，不再打包模块（用的cdn），用全局对象 $ 替换使用
+   */
+  externals: {
+    jquery: '$'
+  },
 }
 ```
 
 ## [loader](./ex3-loader/README.md)
 
+## [plugin](./ex4-plugin/README.md)
+
+## 配置文件中导出方法
+[exporting-a-function](https://webpack.js.org/configuration/configuration-types/#exporting-a-function)
+[environment-options](https://webpack.js.org/api/cli/#environment-options)
+
 ## 常用插件
 - [clean-webpack-plugin](https://github.com/johnagan/clean-webpack-plugin): 清除打包目录
 - [html-webpack-plugin](https://github.com/jantimon/html-webpack-plugin): 自动生成 html
-
+- [copy-webpack-plugin]()
+- webpack.DefinePlugin: 定义全局变量
+- webpack.BannerPlugin: 添加头部注释，如版权信息等
+- webpack.ProvidePlugin: 帮助导入模块，代码中无需引入
 
