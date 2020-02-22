@@ -51,6 +51,10 @@ module.exports = {
     libraryTarget: 'var',
     path: path.resolve(__dirname, 'target'),
     filename: '[name].[chunkhash:5].js',
+    /**
+     * 用于配置 webpack 暴露出的 __webpack_require__.p ，会被 plugin 和 loader 使用拼接路径
+     */
+    publicPath: '/', // 让所有资源导出的路径都拼接上 '/'
   },
   /**
    * 该配置会影响入口和 loaders 的解析，入口和 loaders 的相对路径会以 context 配置作为基准路径，你的配置会独立于 cwd (current wroking direcyory)
@@ -97,14 +101,19 @@ module.exports = {
 
 ## [plugin](./ex4-plugin/README.md)
 
+## [开发服务器 webpack-dev-server](./webpack-dev-server.md)
+
 ## 配置文件中导出方法
 [exporting-a-function](https://webpack.js.org/configuration/configuration-types/#exporting-a-function)
+
 [environment-options](https://webpack.js.org/api/cli/#environment-options)
 
 ## 常用插件
 - [clean-webpack-plugin](https://github.com/johnagan/clean-webpack-plugin): 清除打包目录
 - [html-webpack-plugin](https://github.com/jantimon/html-webpack-plugin): 自动生成 html
-- [copy-webpack-plugin]()
+- [copy-webpack-plugin](https://github.com/webpack-contrib/copy-webpack-plugin): 复制静态资源
+- [file-loader](https://github.com/webpack-contrib/file-loader): 通过模块导入文件时，输出文件到输出目录，并得到 url，导出 url
+- [url-loader](https://github.com/webpack-contrib/url-loader): 通过模块导入文件时，输出文件到输出目录，并得到 base64 ，导出 base64 字符串。包含 file-loader ，可根据 limit 决定是否使用  file-loader 
 - webpack.DefinePlugin: 定义全局变量
 - webpack.BannerPlugin: 添加头部注释，如版权信息等
 - webpack.ProvidePlugin: 帮助导入模块，代码中无需引入
