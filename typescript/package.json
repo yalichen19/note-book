@@ -1,0 +1,19 @@
+{
+  "name": "typescript",
+  "version": "1.0.0",
+  "description": "使用时的问题： - 使用了不存在的变量、函数或成员 - 把一个不确定的类型当作一个确定的类型处理 - 使用了 null 或者 undefined 的成员",
+  "main": "index.js",
+  "scripts": {
+    "dev": "nodemon -e ts --watch src --exec ts-node src",
+    "build": "rm -rf dist && tsc --watch",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "",
+  "license": "ISC",
+  "devDependencies": {
+    "@types/node": "^13.7.4",
+    "nodemon": "^2.0.2",
+    "ts-node": "^8.6.2",
+    "typescript": "^3.8.2"
+  }
+}
