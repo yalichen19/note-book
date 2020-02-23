@@ -71,3 +71,76 @@ function add(a: number, b:number, c?:number) {
     return a + b;
   }
 }
+
+// 接口约束函数
+// type Condition = (n: number) => boolean
+
+// type Condition = { // 定界符
+//   (n: number): boolean
+// }
+
+interface Condition {
+  (n: number): boolean
+}
+
+function sum (numbers: number[], callback: Condition) {
+  return numbers.reduce((pre, next) => {
+    if ( callback(next)) {
+      return pre + next
+    }
+    return pre;
+  }, 0)
+}
+
+console.log(sum([2, 4, 5, 7, 8], n => n % 2 === 0))
+
+
+// 接口继承
+// interface A {
+//   T1: string
+// }
+
+// interface B {
+//   T2: number
+// }
+
+// interface C extends A,B {
+//   T3: boolean
+// }
+
+// let c:C = {
+//   T1: '1',
+//   T2: 2,
+//   T3: false
+// }
+
+type A = {
+  T1: string
+}
+
+type B = {
+  T2: number
+}
+
+type C = {
+  T3: boolean
+} & A & B
+
+let c:C = {
+  T1: '1',
+  T2: 2,
+  T3: false
+}
+
+interface User {
+  readonly id: string, // 不可修改 id
+  name: string,
+  /**
+   * 不可给 score 重新赋值，但可以修改数组元素值，不可调用 push 等方法
+   * or
+   * score: readonly string [],
+   */
+  score: ReadonlyArray<string>,
+  // 即不可重新赋值，也不可修改数组元素值
+  readonly fixScore: ReadonlyArray<string>,
+}

@@ -47,3 +47,17 @@ function add(a, b, c) {
         return a + b;
     }
 }
+function sum(numbers, callback) {
+    return numbers.reduce((pre, next) => {
+        if (callback(next)) {
+            return pre + next;
+        }
+        return pre;
+    }, 0);
+}
+console.log(sum([2, 4, 5, 7, 8], n => n % 2 === 0));
+let c = {
+    T1: '1',
+    T2: 2,
+    T3: false
+};
