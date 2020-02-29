@@ -61,3 +61,59 @@ let c = {
     T2: 2,
     T3: false
 };
+let person = {
+    name: '伪装成鸭子的人',
+    age: 11,
+    sound: '嘎嘎嘎',
+    swin: () => {
+        console.log('swin, swin');
+    }
+};
+let duck = person;
+class User2 {
+    constructor(name, age) {
+        this.name = name;
+        this.gender = '男';
+        this.id = Math.random();
+        this.name = name;
+        this._age = age;
+    }
+    get age() {
+        return this._age;
+    }
+    set age(value) {
+        if (value < 0) {
+            this._age = 0;
+        }
+        else if (value > 200) {
+            this._age = 200;
+        }
+        else {
+            this._age = value;
+        }
+    }
+}
+const u = new User2('xxx', 23);
+u.age = -10;
+console.log(u.age);
+function take(arr, n) {
+    if (n > arr.length) {
+        return arr;
+    }
+    return arr.splice(0, n);
+}
+const result = take([1, 2, 3, 5], 3);
+console.log(result);
+function mixArr(arr1, arr2) {
+    return [...arr1, ...arr2];
+}
+mixArr([1, 2, 3], ['3', '4']);
+function nameToUpperCase(obj) {
+    obj.name.toUpperCase();
+    return obj;
+}
+const objj = {
+    name: 'Kevin yuan',
+    age: 22
+};
+nameToUpperCase(objj);

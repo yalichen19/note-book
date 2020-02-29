@@ -144,3 +144,75 @@ interface User {
   // 即不可重新赋值，也不可修改数组元素值
   readonly fixScore: ReadonlyArray<string>,
 }
+
+interface Duck {
+  sound: '嘎嘎嘎',
+  swin(): void
+}
+let person = {
+  name: '伪装成鸭子的人',
+  age: 11,
+  sound: '嘎嘎嘎' as '嘎嘎嘎', // 类型断言
+  swin:() => {
+    console.log('swin, swin')
+  }
+}
+let duck: Duck = person;
+
+class User2 {
+  readonly id: Number
+  _age: number
+  gender: '男' | '女' = '男' // 属性默认值
+  pid?: string
+
+  constructor(public name: string, age: number) {
+    this.id = Math.random();
+    this.name = name;
+    this._age = age;
+  }
+
+  // 访问器
+  get age(){
+    return this._age;
+  }
+
+  set age(value: number){
+    if(value < 0) {
+      this._age = 0
+    } else if (value > 200) {
+      this._age = 200
+    } else {
+      this._age = value;
+    }
+  }
+}
+const u = new User2('xxx', 23);
+u.age = -10
+console.log(u.age)
+
+function take<T = number>(arr: T[], n: number): T[] {
+  if(n > arr.length) {
+    return arr
+  }
+  return arr.splice(0, n);
+}
+const result = take([1,2,3,5], 3)
+console.log(result)
+
+function mixArr<T, K>(arr1: T[], arr2: K[]): (T|K)[] {
+  return [...arr1, ...arr2];
+}
+mixArr([1,2,3], ['3', '4'])
+
+interface hasName {
+  name: string
+}
+function nameToUpperCase<T extends hasName>(obj: T): T {
+  obj.name.toUpperCase();
+  return obj
+}
+const objj = {
+  name: 'Kevin yuan',
+  age:22
+}
+nameToUpperCase(objj)
