@@ -10,12 +10,13 @@
     "esModuleInterop": true,
     "noEmitOnError":true,
     "moduleResolution": "Node",
-    "strictPropertyInitialization": true
+    "strictPropertyInitialization": true,
+    "experimentalDecorators": true
   },
   "include": [
     "src",
   ],
   "exclude": [
-    "src/ex5-ticTacToe"
+    "src/ex5-tic-tac-toe"
   ]
 }
