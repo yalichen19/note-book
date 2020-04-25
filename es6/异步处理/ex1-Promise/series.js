@@ -6,8 +6,8 @@ const MyPromise = (() => {
     PromiseState = Symbol('PromiseState'),
     changeState = Symbol('changeState'),
     thenables = Symbol('thenables'),
-    catchables = Symbol('thenables')
-  settleHandle = Symbol('settleHandle'),
+    catchables = Symbol('thenables'),
+    settleHandle = Symbol('settleHandle'),
     executeQueue = Symbol('settleHandle'),
     linkPromise = Symbol('linkPromise');
   return class MyPromise {
@@ -42,7 +42,7 @@ const MyPromise = (() => {
     [settleHandle](immediatelyState, settleFunc, queue) {
       if (this[PromiseState] === immediatelyState) {
         setTimeout(() => {
-          settleFunc(this.PromiseValue);
+          settleFunc(this[PromiseValue]);
         }, 0)
       } else {
         queue.push(settleFunc);
@@ -50,19 +50,15 @@ const MyPromise = (() => {
     }
 
     [linkPromise](thenable, catchable) {
-      console.log('thenable, catchable', thenable, catchable)
       function exec (resolve, reject, handle, data) {
         try {
-          console.log('handle', handle)
           const result = handle(data);
-          console.log(result, 'result44444')
           if (result instanceof MyPromise) {
-            result.then(data => resolve(data)).catch(err => reject(err));
+            result.then(data => resolve(data), err => reject(err))
           } else {
             resolve(result);
           }
         } catch (error) {
-          console.log('===============')
           reject(error)
         }
       }
@@ -89,14 +85,13 @@ const MyPromise = (() => {
     }
 
     catch(catchable) {
-      console.log('**************')
       return this[linkPromise](undefined, catchable);
     }
 
   }
 })();
 
-const pro = new MyPromise((resolve, reject) => {
+const pro = new Promise((resolve, reject) => {
   setTimeout(() => {
     resolve(1)
   }, 3000)
@@ -105,17 +100,15 @@ const pro = new MyPromise((resolve, reject) => {
   return data + 1
 }).then((data) => {
   console.log('resolved2', data)
-  new Error('xxx');
-})
-console.log(pro)
-
-pro.catch(error => {
+  throw new Error('xxx');
+}).catch(error => {
   console.log('error', error)
   return new Promise((resolve, reject) => {
     reject(0)
   })
 }).catch(error => {
   console.log('error2', error)
+  return 0
 })
 
 console.log(pro);
