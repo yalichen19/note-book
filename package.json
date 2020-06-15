@@ -1,0 +1,22 @@
+{
+  "name": "note-book",
+  "version": "1.0.0",
+  "description": "[TOC]",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/yalichen19/note-book.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/yalichen19/note-book/issues"
+  },
+  "homepage": "https://github.com/yalichen19/note-book#readme",
+  "devDependencies": {
+    "lerna-changelog": "^1.0.1"
+  }
+}
